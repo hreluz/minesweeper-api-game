@@ -50,6 +50,7 @@ class Grid extends Model
             }
         }
 
+        $grid = Mine::add_mines_to_grid(self::$difficulties[$difficulty], $grid, $x, $y);
         $grid = new Grid([
             'grid' => json_encode($grid),
             'x' => $x,
