@@ -4,13 +4,14 @@ namespace Tests\Feature;
 
 use App\Grid;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Exception;
 use Tests\TestCase;
+use Tests\TestHelpers;
 
 class CreateGridTest extends TestCase
 {
     use RefreshDatabase;
+    use TestHelpers;
 
     /**
      * @test
@@ -64,5 +65,55 @@ class CreateGridTest extends TestCase
         $this->expectExceptionMessage('Difficulty does not exist');
 
         Grid::create_grid(6, 6, 'Difficulty does not exist');
+    }
+
+
+
+    /**
+     *
+     * GRID with mines
+     *    0    1    2    3    4    5    6
+     * --------------------------------------
+     * 0| ___  ___  ___  ___  ___  ___  ___
+     * 1| ___  ___  ___  ___   *   ___  ___
+     * 2| ___   *   ___  ___  ___  ___  ___
+     * 3| ___  ___  ___  ___   *   ___  ___
+     * 4| ___  ___  ___   *   ___  ___  ___
+     * 5| ___  ___  ___  ___   *   ___  ___
+     * 6| ___  ___  ___  ___  ___  ___  ___
+     *
+     *
+     *  SOLVED GRID
+     *    0    1    2    3    4    5    6
+     * --------------------------------------
+     * 0|  0    0    0    1    1    1    0
+     * 1|  1    1    1    1    *    1    0
+     * 2|  1    *    1    2    2    2    0
+     * 3|  1    1    2    2    *    1    0
+     * 4|  0    0    1    *    3    2    0
+     * 5|  0    0    1    2    *    1    0
+     * 6|  0    0    0    1    1    1    0
+     *
+     *
+     */
+
+    /**
+     * @test
+     */
+    public function check_free_spaces_are_added_to_created_grid()
+    {
+        $mines_positions = [
+            1 => [4] ,
+            2 => [1] ,
+            3 => [4],
+            4 => [3],
+            5 => [4]
+        ];
+
+        $this->get_grid(7, 7, $mines_positions, 'SUPER EASY');
+        $this->assertDatabaseHas('grids',[
+            'free_spaces' => 44,
+            'finalized' => null
+        ]);
     }
 }

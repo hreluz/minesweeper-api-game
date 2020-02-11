@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGridsTable extends Migration
+class CreateGridLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,19 @@ class CreateGridsTable extends Migration
      */
     public function up()
     {
-        Schema::create('grids', function (Blueprint $table) {
+        Schema::create('grid_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->json('grid');
             $table->tinyInteger('x');
             $table->tinyInteger('y');
-            $table->tinyInteger('difficulty');
-            $table->tinyInteger('free_spaces')->default(0);
-            $table->tinyInteger('status')->default(1);
-            $table->json('grid');
-            $table->dateTime('started');
-            $table->dateTime('finalized')->nullable();
+            $table->tinyInteger('cells_opened')->default(0);
+            $table->unsignedBigInteger('grid_id')->nullable();
+
+            $table->foreign('grid_id')
+                ->references('id')
+                ->on('grids')
+                ->onDelete('CASCADE');
+
             $table->timestamps();
         });
     }
@@ -34,6 +37,6 @@ class CreateGridsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grids');
+        Schema::dropIfExists('grid_logs');
     }
 }

@@ -7,10 +7,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Exception;
 use Tests\TestCase;
+use Tests\TestHelpers;
 
 class SolveGridTest extends TestCase
 {
     use RefreshDatabase;
+    use TestHelpers;
 
     /**
      *
@@ -411,33 +413,5 @@ class SolveGridTest extends TestCase
         ];
         $this->assertEquals($my_solved_grid, $grid->get_grid_solved());
 
-    }
-
-    /**
-     * @param array $positions
-     * @param int $x
-     * @param int $y
-     * @return array
-     */
-    private function force_mines_position(array $positions, int $x, int $y) {
-        $grid = [];
-
-        for ($i = 0; $i < $x ; $i++ ){
-            $grid[$i] = [];
-            for ($j = 0 ; $j < $y ; $j++) {
-                $grid[$i][$j] = -1;
-
-            }
-
-            if(!isset($positions[$i])) {
-                continue;
-            }
-
-            foreach ($positions[$i] as $k) {
-                $grid[$i][$k] = 99;
-            }
-        }
-
-        return $grid;
     }
 }
