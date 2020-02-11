@@ -63,4 +63,37 @@ class Grid extends Model
 
         return $grid;
     }
+
+    /**
+     * @return array
+     */
+    public function get_grid_solved()
+    {
+        $grid = json_decode($this->grid);
+        for ($i = 0 ; $i < $this->x ; $i++ ) {
+            for ($j = 0 ; $j < $this->y ; $j++) {
+
+                if($grid[$i][$j] == 99) {
+                    continue;
+                }
+
+                $mines_number = 0;
+                $positions = [0, 1, -1];
+
+                foreach ($positions as $x) {
+                    foreach ($positions as $y){
+                        if(isset($grid[$i + $x][$j + $y]) && $grid[$i + $x][$j + $y] == 99 ){
+                            $mines_number++;
+                        }
+                    }
+                }
+                $grid[$i][$j] = $mines_number;
+            }
+
+        }
+
+        return $grid;
+    }
+
+
 }
