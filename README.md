@@ -1,78 +1,109 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Minesweeper API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## CreateGridTest
+This file includes tests for creating a grid.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```php
+check_grid_is_created()
+check_x_cannot_be_negative()
+check_y_cannot_be_negative()
+check_difficulty_exists()
+check_free_spaces_are_added_to_created_grid()
+```
 
-## Learning Laravel
+The static function  for creating a grid is 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```php
+$x = 6;
+$y = 6;
+$difficulty = 'EASY';
+Grid::create_grid($x, $y, $difficulty);
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## AddMinesToGridTest
+This file includes tests for describing how the mines are added to the grid.
 
-## Laravel Sponsors
+```php
+check_four_mines_are_added_to_grid_in_super_easy_in_6_by_6()
+check_six_mines_are_added_to_grid_in_super_easy_in_8_by_8()
+check_six_mines_are_added_to_grid_in_hard_in_8_by_8()
+check_fifty_mines_are_added_to_grid_in_hard_in_10_by_10()
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+How many mines are added to the grid?
+It depends of the difficulty chosen
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
+The difficulties are 
+```
+        'SUPER EASY' => 1,
+        'EASY' => 2,
+        'NORMAL' => 3,
+        'HARD' => 4,
+        'SUPER HARD' => 5
+```
 
-## Contributing
+The formula for getting the number of mines, depends, for example :
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+  round(($x * $y) /10  * ($difficulty));
+```
 
-## Code of Conduct
+```
+  round((6 * 6 ) /10  * (2)) =  7 mines
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## SolvedGridTest
+This file includes tests for showing a solved grid
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```php
+get_solved_grid_seven_by_seven_on_easy_difficulty()
+get_solved_grid_seven_by_seven_on_super_hard_difficulty()
+get_solved_grid_nine_by_nine_on_hard_difficulty()
+```
+
+For getting a solved grid, only a function call is necessary, for example :
+
+
+```php
+$x = 7;
+$y = 7;
+$difficulty = 'EASY';
+$grid = Grid::create_grid($x, $y, $difficulty);
+
+$grid->get_grid_solved();
+```
+
+Because the mines are added randomly, we forced it just for the tests cases
+
+
+## GameSevenBySevenEasyDifficultyTest
+This test sums up all the previous features described, this test includes the tests:
+
+```php
+click_on_0_0_opens_3_more()
+click_on_0_0_and_6_0_opens_10_more()
+click_on_0_0_and_6_0_and_0_6_opens_17_more()
+click_everything_less_than_mines_and_end_the_game()
+click_on_a_mine_ends_game()
+click_on_non_existing_X_cell()
+click_on_non_existing_Y_cell()
+```
+
+After clicking a cell(x,y), the grid should be updated and show a new one, in case it clicks a mine, the game is over, and in case all the possibles cells that are not a mine have been opened, the game finishes. For using it, it should be called from the grid with the  x and y parameters : 
+
+
+```php
+$x = 7;
+$y = 7;
+$difficulty = 'EASY';
+$grid = Grid::create_grid($x, $y, $difficulty);
+
+$grid->get_grid_solved();
+$grid->click_on(2,1);
+```
